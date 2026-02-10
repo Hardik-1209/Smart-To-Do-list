@@ -6,11 +6,19 @@ from datetime import datetime, timezone
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
+import os
+from groq import Groq
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # ---------------------------------------------------------------------------
 # App setup
 # ---------------------------------------------------------------------------
 app = Flask(__name__)
+client = Groq(
+    api_key=os.environ.get("GROQ_API_KEY"),
+)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///tasks.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
@@ -256,6 +264,36 @@ def delete_task(task_id):
     db.session.delete(task)
     db.session.commit()
     return jsonify({"message": "Task deleted"}), 200
+
+
+@app.route("/api/chat", methods=["POST"])
+def chat():
+    """Handle chat requests with Groq."""
+    data = request.get_json(force=True)
+    user_message = data.get("message", "")
+    
+    if not user_message:
+        return jsonify({"error": "Message is required"}), 400
+
+    try:
+        completion = client.chat.completions.create(
+            messages=[
+                {
+                    "role": "system",
+                    "content": "You are a helpful AI assistant for a Smart Task Manager application. help user to manage task effectively and help in day to day time sheduling etc and solve user query."
+                },
+                {
+                    "role": "user",
+                    "content": user_message
+                }
+            ],
+            model="llama3-8b-8192",
+        )
+        ai_response = completion.choices[0].message.content
+        return jsonify({"response": ai_response})
+    except Exception as e:
+        print(f"Error in chat endpoint: {e}")
+        return jsonify({"error": str(e)}), 500
 
 
 if __name__ == "__main__":

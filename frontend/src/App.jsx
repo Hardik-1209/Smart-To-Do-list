@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import Sidebar from "./components/Sidebar";
 import TaskCard from "./components/TaskCard";
 import TaskForm from "./components/TaskForm";
+import Chatbot from "./components/Chatbot";
 import { getTasks, createTask, updateTask, deleteTask } from "./api";
 import "./App.css";
 
@@ -211,6 +212,7 @@ export default function App() {
           onClose={handleCloseForm}
         />
       )}
+      <Chatbot />
     </>
   );
 }
