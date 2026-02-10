@@ -1,0 +1,60 @@
+/* App-scoped overrides */
+
+/* Smart Task Features */
+
+/* Header Row in Card */
+.task-card__header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.task-card__header-row .task-card__title {
+    margin-bottom: 0;
+    flex: 1;
+}
+
+/* New Badges */
+.badge--overdue {
+    background: rgba(248, 113, 113, 0.2);
+    color: var(--accent-red);
+    border: 1px solid rgba(248, 113, 113, 0.3);
+}
+
+.badge--late {
+    background: rgba(251, 146, 60, 0.2);
+    color: var(--accent-orange);
+    border: 1px solid rgba(251, 146, 60, 0.3);
+}
+
+/* Date Display */
+.task-date {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--bg-glass);
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+    margin-left: auto;
+    /* Push to right if in meta row */
+}
+
+.task-date--overdue {
+    color: var(--accent-red);
+    background: rgba(248, 113, 113, 0.1);
+}
+
+.task-date--completed {
+    color: var(--accent-green);
+    opacity: 0.8;
+}
+
+/* Ensure meta row handles the date properly */
+.task-card__meta {
+    justify-content: flex-start;
+}
